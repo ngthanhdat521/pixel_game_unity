@@ -19,6 +19,17 @@ public class Slime : MonoBehaviour
     public TMP_Text textPopup;
     public Player player;
 
+
+    // Hp Monnster
+    public GameObject healthBar;
+    public static readonly float SLIME_HEALTH_STAT = 200;
+    public static readonly float SLIME_HEALTH_WIDTH = 0.3336f;
+    private float healthStat = SLIME_HEALTH_STAT;
+
+    // Audio
+    public AudioSource audioSource;
+    public AudioClip deathClip;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -33,7 +44,7 @@ public class Slime : MonoBehaviour
         rb.velocity = new Vector3(currentMoveSpeed, 0);
         animator.SetFloat("MoveX", rb.velocity.x);
         animator.SetFloat("MoveY", rb.velocity.y);
-    }   
+    }
 
     public void IsFacingRight()
     {
@@ -56,32 +67,10 @@ public class Slime : MonoBehaviour
 
     private void OnHit(Collider2D collision)
     {
-        if (collision.name == "RightHitbox")
+        if (player.ContainsHitbox(collision.name))
         {
-            Debug.Log("RightHitbox animation finished!");
-            rightHitbox.SetActive(false);
             CreateHitPopup();
-        }
-
-        if (collision.name == "LeftHitbox")
-        {
-            Debug.Log("LeftHitbox animation finished!");
-            leftHitbox.SetActive(false);
-            CreateHitPopup();
-        }
-
-        if (collision.name == "UpHitbox")
-        {
-            Debug.Log("UpHitbox animation finished!");
-            upHitbox.SetActive(false);
-            CreateHitPopup();
-        }
-
-        if (collision.name == "DownHitbox")
-        {
-            Debug.Log("DownHitbox animation finished!");
-            downHitbox.SetActive(false);
-            CreateHitPopup();
+            player.OnInactiveAttack();
         }
     }
 
@@ -92,6 +81,29 @@ public class Slime : MonoBehaviour
         popup.transform.localPosition = Vector3.zero;
         popup.transform.position = transform.position;
 
-        textPopup.text = player.strength.ToString();
+        float strenth = player.CalcStrength();
+
+        textPopup.text = strenth.ToString();
+
+        healthStat -= strenth;
+        Injured(healthStat / SLIME_HEALTH_STAT);
+        animator.SetTrigger("Injured");
+
+        if (healthStat <= 0)
+        {
+            audioSource.PlayOneShot(deathClip);
+            player.GainExp(150);
+            Invoke("Die", deathClip.length);
+        }
+    }
+
+    private void Die()
+    {
+        animator.SetTrigger("Dead");
+    }
+
+    private void Injured(float percent)
+    {
+        healthBar.transform.localScale = new Vector2(SLIME_HEALTH_WIDTH * percent, healthBar.transform.localScale.y);
     }
 }

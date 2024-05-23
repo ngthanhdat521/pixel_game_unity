@@ -7,9 +7,6 @@ public class MainCamera : MonoBehaviour
     public static readonly float CAMERA_LIMIT_X = 14.77f;
     public static readonly float CAMERA_LIMIT_Y = 13.72f;
 
-    public AudioSource gameAudio = new AudioSource();
-    public AudioClip mainAudio;
-
     // Start is called before the first frame update
     void Start()
     {
@@ -42,8 +39,6 @@ public class MainCamera : MonoBehaviour
         {
             y = next.y;
         }
-
-        Debug.Log(next + " " + player.position + " " + transform.position + " " + x + " " + y);
 
         return new Vector3(x, y, -10);
     }

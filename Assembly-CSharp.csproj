@@ -10,7 +10,7 @@
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <RootNamespace></RootNamespace>
-    <ProjectGuid>{AB28FA40-E16F-5E92-C642-A07FB812BF2E}</ProjectGuid>
+    <ProjectGuid>{FD6F0822-A062-938A-7FC1-22635649FAE0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AssemblyName>Assembly-CSharp</AssemblyName>
@@ -65,6 +65,7 @@
     <Compile Include="Assets\MainCamera.cs" />
     <Compile Include="Assets\HitPopup.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />
+    <Compile Include="Assets\SlimeDead.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />
