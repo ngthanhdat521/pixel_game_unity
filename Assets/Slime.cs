@@ -7,14 +7,11 @@ public class Slime : MonoBehaviour
     public Animator animator;
 
     public static readonly float MOVE_SPEED = 1f;
+    public static readonly float SPEED = 100;
     public float currentMoveSpeed = MOVE_SPEED;
     public Vector3 originalX;
 
     // Hitbox
-    public GameObject rightHitbox;
-    public GameObject leftHitbox;
-    public GameObject upHitbox;
-    public GameObject downHitbox;
     public GameObject hitPopup;
     public TMP_Text textPopup;
     public Player player;
@@ -30,6 +27,9 @@ public class Slime : MonoBehaviour
     public AudioSource audioSource;
     public AudioClip deathClip;
 
+    // Slime Stat
+    public bool following = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -40,8 +40,16 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        IsFacingRight();
-        rb.velocity = new Vector3(currentMoveSpeed, 0);
+        if (following)
+        {
+            OnFollow();
+        }
+        else
+        {
+            IsFacingRight();
+            OnMovement();
+        }
+
         animator.SetFloat("MoveX", rb.velocity.x);
         animator.SetFloat("MoveY", rb.velocity.y);
     }
@@ -72,6 +80,36 @@ public class Slime : MonoBehaviour
             CreateHitPopup();
             player.OnInactiveAttack();
         }
+    }
+
+    private void OnMovement()
+    {
+        rb.velocity = new Vector3(currentMoveSpeed, 0);
+    }
+
+    private void OnFollow()
+    {
+        Vector2 direction = player.transform.position - transform.position;
+        float distance = Vector3.Distance(player.transform.position, transform.position);
+
+        if (distance > 5)
+        {
+            direction.x = 0;
+            direction.y = 0;
+            UntriggerFollow();
+        }
+
+        rb.velocity = direction * SPEED * Time.deltaTime;
+    }
+
+    public void TriggerFollow()
+    {
+        following = true;
+    }
+
+    public void UntriggerFollow()
+    {
+        following = false;
     }
 
     private void CreateHitPopup()

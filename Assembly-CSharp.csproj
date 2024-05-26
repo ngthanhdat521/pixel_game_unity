@@ -66,6 +66,7 @@
     <Compile Include="Assets\HitPopup.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />
     <Compile Include="Assets\SlimeDead.cs" />
+    <Compile Include="Assets\AttackRange.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\TextMesh Pro\Shaders\TMPro.cginc" />

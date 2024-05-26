@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 3000;
+    public static readonly float SPEED = 1000;
 
     // Private props
     private float strength = 5;
