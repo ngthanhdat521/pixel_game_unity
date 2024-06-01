@@ -1,4 +1,6 @@
-using TMPro;
+﻿using TMPro;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
@@ -28,7 +30,7 @@ public class Slime : MonoBehaviour
     public AudioClip deathClip;
 
     // Slime Stat
-    public bool following = false;
+    public string status = "Attack";
 
     // Start is called before the first frame update
     void Start()
@@ -40,18 +42,24 @@ public class Slime : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (following)
-        {
-            OnFollow();
-        }
-        else
-        {
-            IsFacingRight();
-            OnMovement();
-        }
+        OnAttack();
+        //if (status == "Attack")
+        //{
+        //    Debug.Log("attack trigger123");
+        //    OnAttack();
+        //}
+        //else if (status == "Chase")
+        //{
+        //    OnFollow();
+        //}
+        //else
+        //{
+        //    IsFacingRight();
+        //    OnMovement();
+        //}
 
-        animator.SetFloat("MoveX", rb.velocity.x);
-        animator.SetFloat("MoveY", rb.velocity.y);
+        //animator.SetFloat("MoveX", rb.velocity.x);
+        //animator.SetFloat("MoveY", rb.velocity.y);
     }
 
     public void IsFacingRight()
@@ -62,14 +70,8 @@ public class Slime : MonoBehaviour
         }
     }
 
-    private void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log($"OnCollisionStay2D {collision.gameObject.name}");
-    }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log($"OnTriggerStay2D {collision.gameObject.name}");
         OnHit(collision);
     }
 
@@ -96,20 +98,47 @@ public class Slime : MonoBehaviour
         {
             direction.x = 0;
             direction.y = 0;
-            UntriggerFollow();
+            TriggerIddle();
         }
 
         rb.velocity = direction * SPEED * Time.deltaTime;
     }
 
-    public void TriggerFollow()
+    private void OnAttack()
     {
-        following = true;
+        //animator.SetTrigger("Attack");
+        //Vector3 targetPosition = player.transform.position;
+        //transform.position = Vector3.MoveTowards(
+        //    transform.position,
+        //    targetPosition,
+        //    1 * Time.deltaTime
+        //);
+        //Vector2 next = Vector2.MoveTowards(
+        //    transform.position,
+        //    player.transform.position,
+        //    1 * Time.deltaTime
+        //);
+        //Vector2 direction = player.transform.position - transform.position;
+        //direction.y += 5;
+        //rb.velocity = direction * 50 * Time.deltaTime;
+        //Debug.Log("attack slime " + direction + " " + rb.velocity);
+        //rb.velocity = next * 500 * Time.deltaTime;
+        rb.AddForce(Vector2.up * 700f);
     }
 
-    public void UntriggerFollow()
+    public void TriggerAttack()
     {
-        following = false;
+        status = "Attack";
+    }
+
+    public void TriggerFollow()
+    {
+        status = "Chase";
+    }
+
+    public void TriggerIddle()
+    {
+        status = "";
     }
 
     private void CreateHitPopup()

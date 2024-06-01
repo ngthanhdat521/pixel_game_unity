@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -19,7 +19,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 1000;
+    public static readonly float SPEED = 3000;
 
     // Private props
     private float strength = 5;
@@ -34,6 +34,8 @@ public class Player : MonoBehaviour
     private float exp = 0;
     public string direction = "";
     public TMP_Text levelText;
+    public static readonly float ATTACK_DELAY_TIME = 0.5f; // Thời gian delay mong muốn
+    private float lastAttackTime = 0f; // Thời gian đánh đòn trước
 
     // Start is called before the first frame update
     void Start()
@@ -77,10 +79,13 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space)) // Check for space key press
         {
-            animator.SetTrigger("Attack");
-            playerAudio.PlayOneShot(attackClip);
+            if (DelayTime(ATTACK_DELAY_TIME))
+            {
+                animator.SetTrigger("Attack");
+                playerAudio.PlayOneShot(attackClip);
 
-            OnActiveAttack();
+                OnActiveAttack();
+            }
         }
     }
 
@@ -136,7 +141,7 @@ public class Player : MonoBehaviour
     public GameObject GetCurrentHitbox()
     {
         direction = OnAttackDirection();
-        
+
         if (ContainsHitbox(direction))
         {
             GameObject hitbox = hitboxes[direction];
@@ -202,7 +207,19 @@ public class Player : MonoBehaviour
     public void ActiveAttackDirection(string collisionName)
     {
         GameObject hitbox = hitboxes[collisionName];
-        Debug.Log("Hitbox unactive " + collisionName);
         hitbox.SetActive(false);
+    }
+
+    public bool DelayTime(float seconds)
+    {
+        float currentTime = Time.time;
+        if (currentTime - lastAttackTime >= seconds)
+        {
+            lastAttackTime = currentTime;
+            return true;
+        }
+
+
+        return false;
     }
 }
