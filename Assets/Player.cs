@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -19,7 +20,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 1000;
+    public static readonly float SPEED = 4000;
 
     // Private props
     private float strength = 5;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     private float lastAttackTime = 0f; // Thời gian đánh đòn trước
     private float lastHurtTime = 0f; // Thời gian đánh đòn trước
     private float lastMoveTime = 0f; // Thời gian đánh đòn trước
+    public MainCamera mainCamera;
 
 
     // Start is called before the first frame update
@@ -83,12 +85,27 @@ public class Player : MonoBehaviour
             }
         }
 
+
         if (!IsDead())
         {
-            rb.velocity = new Vector2(
-                Input.GetAxisRaw("Horizontal"),
-                Input.GetAxisRaw("Vertical")
-            ) * SPEED * Time.deltaTime;
+            int x = (int) Math.Floor(transform.position.x);
+            int y = (int) Math.Floor(transform.position.y);
+            Debug.Log(transform.position + " " + transform.position.y + " " + y + " " +x + " " + (transform.position.y >= -6 && transform.position.y <= 27));
+
+            if (
+                (x >= -10 && x <= 50) 
+                && (y >= -6 && y <= 27)
+            )
+            {
+                rb.velocity = new Vector2(
+                    Input.GetAxisRaw("Horizontal"),
+                    Input.GetAxisRaw("Vertical")
+                ) * SPEED * Time.deltaTime;
+            }
+            else
+            {
+                rb.velocity = Vector2.zero;
+            }
         }
 
         animator.SetFloat("MoveX", rb.velocity.x);
@@ -251,7 +268,7 @@ public class Player : MonoBehaviour
 
     public float CalcStrength()
     {
-        return strength + level * 20;
+        return strength + level * 10;
     }
 
     public bool ContainsHitbox(string collisionName)

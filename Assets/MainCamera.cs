@@ -30,7 +30,7 @@ public class MainCamera : MonoBehaviour
         float x = transform.position.x;
         float y = transform.position.y;
 
-        if (next.x >= 10.7f && next.x <= 29.8f)
+        if (next.x >= 8.6f && next.x <= 32f)
         {
             x = next.x;
         }
@@ -41,5 +41,26 @@ public class MainCamera : MonoBehaviour
         }
 
         return new Vector3(x, y, -10);
+    }
+
+    public bool IsValid()
+    {
+        Vector3 next = Vector3.Slerp(
+            transform.position,
+            player.position,
+            FOLLOW_SPEED * Time.deltaTime
+        );
+
+        if (next.x >= 8.6f && next.x <= 32f)
+        {
+            return true;
+        }
+
+        if (next.y >= 3.5f && next.y <= 14.5f)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

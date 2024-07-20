@@ -1,3 +1,4 @@
+﻿using System.Threading.Tasks;
 using UnityEngine;
 
 public class SlimeDead : StateMachineBehaviour
@@ -32,11 +33,12 @@ public class SlimeDead : StateMachineBehaviour
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
 
-    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public async override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (stateInfo.IsName("Slime_Die"))
         {
-            //Destroy(animator.gameObject);
+            //await Task.Delay(100); // Đợi 3 giây
+            Destroy(animator.gameObject);
         }
     }
 }

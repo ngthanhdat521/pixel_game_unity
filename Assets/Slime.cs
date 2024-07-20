@@ -192,7 +192,7 @@ public class Slime : MonoBehaviour
             audioSource.PlayOneShot(deathClip);
             player.GainExp(150);
             animator.SetTrigger("Dead");
-            Invoke("Die", 1f);
+            //Invoke("Die", deathClip.length);
         }
         else
         {
@@ -210,7 +210,7 @@ public class Slime : MonoBehaviour
     private void Die()
     {
         //animator.SetTrigger("Dead");
-        Destroy(animator.gameObject);
+        Destroy(gameObject);
     }
 
     private void Injured(float percent)
