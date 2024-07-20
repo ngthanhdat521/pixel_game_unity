@@ -109,7 +109,7 @@ public class Player : MonoBehaviour
 
     private void OnAttack()
     {
-        if (Input.GetKeyDown(KeyCode.Space)) // Check for space key press
+        if (Input.GetKeyDown(KeyCode.Space) && !IsDead()) // Check for space key press
         {
             if (DelayTime(ATTACK_DELAY_TIME))
             {
@@ -185,10 +185,8 @@ public class Player : MonoBehaviour
 
     public void OnHit(Collider2D collision)
     {
-        Debug.Log("okk2 " +  collision.gameObject.name);
         if (collision.gameObject.name == "Player" && DelayTimeForHurt(0.5f))
         {
-            Debug.Log("okk");
             GameObject popup = Instantiate(hitPopup, transform.position, Quaternion.identity);
             popup.transform.SetParent(transform);
             popup.transform.localPosition = Vector3.zero;
@@ -253,7 +251,7 @@ public class Player : MonoBehaviour
 
     public float CalcStrength()
     {
-        return strength + level * 5;
+        return strength + level * 20;
     }
 
     public bool ContainsHitbox(string collisionName)

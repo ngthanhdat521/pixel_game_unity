@@ -1,4 +1,5 @@
 ﻿using TMPro;
+using System.Collections;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
@@ -30,6 +31,8 @@ public class Slime : MonoBehaviour
 
     // Slime Stat
     public bool IsTargeting;
+    public bool IsInjured = false;
+    private float lastHurtTime = 0f; // Thời gian đánh đòn trước
 
     // Start is called before the first frame update
     void Start()
@@ -43,7 +46,7 @@ public class Slime : MonoBehaviour
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        if (stateInfo.IsName("Slime_Attack") || IsTargeting) {
+        if ((stateInfo.IsName("Slime_Attack") || IsTargeting)) {
             float normalizedTime = stateInfo.normalizedTime % 1; // Tỉ lệ từ 0 đến 1
             int currentFrame = Mathf.FloorToInt(normalizedTime * 7);
             if (currentFrame >= 2 && currentFrame <= 4)
@@ -66,22 +69,19 @@ public class Slime : MonoBehaviour
         return stateInfo.IsName("Slime_Attack");
     }
 
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        Debug.Log("collision1" + collision.gameObject.name);
-    }
-
     private void OnTriggerStay2D(Collider2D collision)
     {
-        Debug.Log("collision2" + collision.gameObject.name);
-
-        OnHit(collision);
-        player.OnHit(collision);
+        //OnHit(collision);
+        //Debug.Log(collision.tag);
+        //if (collision != null)
+        //{
+        //    player.OnHit(collision);
+        //}
     }
 
-    private void OnHit(Collider2D collision)
+    public void OnHit(Collider2D collision)
     {
-        if (player.ContainsHitbox(collision.name))
+        if (player.ContainsHitbox(collision.name) && DelayTimeForHurt(0.5f))
         {
             CreateHitPopup();
             player.OnInactiveAttack();
@@ -144,7 +144,6 @@ public class Slime : MonoBehaviour
         // So sánh vị trí để xác định Player ở bên trái hay bên phải Slime
         if (playerPosition.x < slimePosition.x)
         {
-            Debug.Log("Player is on the left side of Slime.");
             // Thực hiện các hành động khi Player ở bên trái Slime
             currentMoveSpeed = -MOVE_SPEED;
             animator.SetFloat("MoveX", -1);
@@ -152,7 +151,6 @@ public class Slime : MonoBehaviour
         }
         else if (playerPosition.x > slimePosition.x)
         {
-            Debug.Log("Player is on the right side of Slime.");
             // Thực hiện các hành động khi Player ở bên phải Slime
             currentMoveSpeed = MOVE_SPEED;
             animator.SetFloat("MoveX", 1);
@@ -160,7 +158,6 @@ public class Slime : MonoBehaviour
         }
         else
         {
-            Debug.Log("Player is directly on top of Slime or at the same position.");
             // Xử lý khi Player ở trên hoặc cùng vị trí với Slime (nếu cần)
         }
 
@@ -188,23 +185,49 @@ public class Slime : MonoBehaviour
 
         healthStat -= strenth;
         Injured(healthStat / SLIME_HEALTH_STAT);
-        animator.SetTrigger("Injured");
+        IsInjured = true;
 
         if (healthStat <= 0)
         {
             audioSource.PlayOneShot(deathClip);
             player.GainExp(150);
-            Invoke("Die", deathClip.length);
+            animator.SetTrigger("Dead");
+            Invoke("Die", 1f);
         }
+        else
+        {
+            animator.SetTrigger("Injured");
+        }
+
+        Invoke("IsInjuring", 0.2f);
+    }
+
+    void IsInjuring()
+    {
+        IsInjured = false;
     }
 
     private void Die()
     {
-        animator.SetTrigger("Dead");
+        //animator.SetTrigger("Dead");
+        Destroy(animator.gameObject);
     }
 
     private void Injured(float percent)
     {
         healthBar.transform.localScale = new Vector2(SLIME_HEALTH_WIDTH * percent, healthBar.transform.localScale.y);
+    }
+
+    public bool DelayTimeForHurt(float seconds)
+    {
+        float currentTime = Time.time;
+        if (currentTime - lastHurtTime >= seconds)
+        {
+            lastHurtTime = currentTime;
+            return true;
+        }
+
+
+        return false;
     }
 }

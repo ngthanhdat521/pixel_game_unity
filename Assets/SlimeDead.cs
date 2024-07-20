@@ -36,7 +36,7 @@ public class SlimeDead : StateMachineBehaviour
     {
         if (stateInfo.IsName("Slime_Die"))
         {
-            Destroy(animator.gameObject);
+            //Destroy(animator.gameObject);
         }
     }
 }

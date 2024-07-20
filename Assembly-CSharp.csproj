@@ -65,6 +65,7 @@
     <Compile Include="Assets\MainCamera.cs" />
     <Compile Include="Assets\HurtRange.cs" />
     <Compile Include="Assets\HitPopup.cs" />
+    <Compile Include="Assets\BaseRange.cs" />
     <Compile Include="Assets\PlayerAttack.cs" />
     <Compile Include="Assets\SlimeDead.cs" />
     <Compile Include="Assets\AttackRange.cs" />

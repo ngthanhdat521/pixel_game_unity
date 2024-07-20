@@ -17,7 +17,7 @@ public class AttackRange : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.name == "Player" && !slime.IsAttacking())
+        if (collision.name == "Player" && !slime.IsAttacking() && !slime.IsInjured)
         {
             slime.TriggerAttack();
         }

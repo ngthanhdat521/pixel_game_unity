@@ -63,6 +63,32 @@ BlendTree:
   m_UseAutomaticThresholds: 0
   m_NormalizedBlendValues: 0
   m_BlendType: 1
+--- !u!1102 &-6368325740771240909
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Slime_Die_Right_02
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: ba64c48eaf399d542ad88e9047f58d5f, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
 --- !u!206 &-5560210105174706378
 BlendTree:
   m_ObjectHideFlags: 1
@@ -187,7 +213,7 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b501020781762ec4f82facb5746157d2, type: 2}
+    m_Motion: {fileID: 7400000, guid: 336c171c69d76ab42b3f8a511187c6ac, type: 2}
     m_Threshold: 0
     m_Position: {x: -1, y: 0}
     m_TimeScale: 1
@@ -195,7 +221,7 @@ BlendTree:
     m_DirectBlendParameter: LastMoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e6134d5bbe30c84408ecd93f6540535d, type: 2}
+    m_Motion: {fileID: 7400000, guid: ba64c48eaf399d542ad88e9047f58d5f, type: 2}
     m_Threshold: 0.2
     m_Position: {x: 1, y: 0}
     m_TimeScale: 1
@@ -203,7 +229,7 @@ BlendTree:
     m_DirectBlendParameter: LastMoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b501020781762ec4f82facb5746157d2, type: 2}
+    m_Motion: {fileID: 7400000, guid: 336c171c69d76ab42b3f8a511187c6ac, type: 2}
     m_Threshold: 0.4
     m_Position: {x: -1, y: 1}
     m_TimeScale: 1
@@ -211,7 +237,7 @@ BlendTree:
     m_DirectBlendParameter: LastMoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e6134d5bbe30c84408ecd93f6540535d, type: 2}
+    m_Motion: {fileID: 7400000, guid: ba64c48eaf399d542ad88e9047f58d5f, type: 2}
     m_Threshold: 0.6
     m_Position: {x: 1, y: 1}
     m_TimeScale: 1
@@ -219,7 +245,7 @@ BlendTree:
     m_DirectBlendParameter: LastMoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: b501020781762ec4f82facb5746157d2, type: 2}
+    m_Motion: {fileID: 7400000, guid: 336c171c69d76ab42b3f8a511187c6ac, type: 2}
     m_Threshold: 0.8
     m_Position: {x: -1, y: -1}
     m_TimeScale: 1
@@ -227,7 +253,7 @@ BlendTree:
     m_DirectBlendParameter: LastMoveX
     m_Mirror: 0
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: e6134d5bbe30c84408ecd93f6540535d, type: 2}
+    m_Motion: {fileID: 7400000, guid: ba64c48eaf399d542ad88e9047f58d5f, type: 2}
     m_Threshold: 1
     m_Position: {x: 1, y: -1}
     m_TimeScale: 1
@@ -268,6 +294,12 @@ AnimatorStateMachine:
   - serializedVersion: 1
     m_State: {fileID: 2270425496795726773}
     m_Position: {x: 500, y: 130, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: -6368325740771240909}
+    m_Position: {x: 535, y: 195, z: 0}
+  - serializedVersion: 1
+    m_State: {fileID: 5974181277520716207}
+    m_Position: {x: 570, y: 260, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions:
   - {fileID: -748013821084946651}
@@ -669,3 +701,29 @@ AnimatorStateTransition:
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
   m_CanTransitionToSelf: 1
+--- !u!1102 &5974181277520716207
+AnimatorState:
+  serializedVersion: 6
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: Slime_Die_Left_02
+  m_Speed: 1
+  m_CycleOffset: 0
+  m_Transitions: []
+  m_StateMachineBehaviours: []
+  m_Position: {x: 50, y: 50, z: 0}
+  m_IKOnFeet: 0
+  m_WriteDefaultValues: 1
+  m_Mirror: 0
+  m_SpeedParameterActive: 0
+  m_MirrorParameterActive: 0
+  m_CycleOffsetParameterActive: 0
+  m_TimeParameterActive: 0
+  m_Motion: {fileID: 7400000, guid: 336c171c69d76ab42b3f8a511187c6ac, type: 2}
+  m_Tag: 
+  m_SpeedParameter: 
+  m_MirrorParameter: 
+  m_CycleOffsetParameter: 
+  m_TimeParameter: 
