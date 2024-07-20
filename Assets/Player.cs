@@ -59,8 +59,6 @@ public class Player : MonoBehaviour
         foreach (Collider2D collider in allColliders)
         {
             // Nếu Collider không phải là của Player và không thuộc layer "Obstacle"
-            Debug.Log("123 " + collider.name);
-
             if (collider != boxCollider2D && collider.gameObject.name.IndexOf("Slime") >= 0)
             {
                 // Bỏ qua va chạm giữa Player và Collider này
@@ -107,19 +105,6 @@ public class Player : MonoBehaviour
         }
 
         OnAttack();
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        // Xử lý va chạm
-    }
-
-    void OnCollisionStay2D(Collision2D collision)
-    {
-        if (DelayTimeForHurt(ATTACK_DELAY_TIME))
-        {
-            OnHit(collision);
-        }
     }
 
     private void OnAttack()
@@ -198,10 +183,12 @@ public class Player : MonoBehaviour
         return null;
     }
 
-    public void OnHit(Collision2D collision)
+    public void OnHit(Collider2D collision)
     {
-        if (collision.gameObject.name.IndexOf("Slime") >= 0)
+        Debug.Log("okk2 " +  collision.gameObject.name);
+        if (collision.gameObject.name == "Player" && DelayTimeForHurt(0.5f))
         {
+            Debug.Log("okk");
             GameObject popup = Instantiate(hitPopup, transform.position, Quaternion.identity);
             popup.transform.SetParent(transform);
             popup.transform.localPosition = Vector3.zero;

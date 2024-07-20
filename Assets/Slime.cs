@@ -66,9 +66,17 @@ public class Slime : MonoBehaviour
         return stateInfo.IsName("Slime_Attack");
     }
 
+    void OnCollisionStay2D(Collision2D collision)
+    {
+        Debug.Log("collision1" + collision.gameObject.name);
+    }
+
     private void OnTriggerStay2D(Collider2D collision)
     {
+        Debug.Log("collision2" + collision.gameObject.name);
+
         OnHit(collision);
+        player.OnHit(collision);
     }
 
     private void OnHit(Collider2D collision)
