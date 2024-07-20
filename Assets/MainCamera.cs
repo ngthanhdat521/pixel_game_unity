@@ -29,8 +29,8 @@ public class MainCamera : MonoBehaviour
 
         float x = transform.position.x;
         float y = transform.position.y;
-        Debug.Log($"123123 {next.x}");
-        if (next.x >= 13.5f && next.x <= 27f)
+
+        if (next.x >= 10.7f && next.x <= 29.8f)
         {
             x = next.x;
         }

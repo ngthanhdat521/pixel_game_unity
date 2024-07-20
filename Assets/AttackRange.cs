@@ -19,14 +19,12 @@ public class AttackRange : MonoBehaviour
     {
         if (collision.name == "Player" && !slime.IsAttacking())
         {
-            Debug.Log("okk");
             slime.TriggerAttack();
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        Debug.Log("okk2 " + collision.name);
         if (collision.name == "Player")
         {
             slime.UntriggerAttack();

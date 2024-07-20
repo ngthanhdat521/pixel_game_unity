@@ -26,6 +26,7 @@ public class Slime : MonoBehaviour
     // Audio
     public AudioSource audioSource;
     public AudioClip deathClip;
+    public AudioClip attackClip;
 
     // Slime Stat
     public bool IsTargeting;
@@ -42,10 +43,6 @@ public class Slime : MonoBehaviour
     {
         AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        //if (isAttacking) // Check for space key press
-        //{
-            
-        //}
         if (stateInfo.IsName("Slime_Attack") || IsTargeting) {
             float normalizedTime = stateInfo.normalizedTime % 1; // Tỉ lệ từ 0 đến 1
             int currentFrame = Mathf.FloorToInt(normalizedTime * 7);
@@ -133,9 +130,36 @@ public class Slime : MonoBehaviour
 
     public void TriggerAttack()
     {
+        Vector3 playerPosition = player.transform.position;
+        Vector3 slimePosition = transform.position;
+
+        // So sánh vị trí để xác định Player ở bên trái hay bên phải Slime
+        if (playerPosition.x < slimePosition.x)
+        {
+            Debug.Log("Player is on the left side of Slime.");
+            // Thực hiện các hành động khi Player ở bên trái Slime
+            currentMoveSpeed = -MOVE_SPEED;
+            animator.SetFloat("MoveX", -1);
+
+        }
+        else if (playerPosition.x > slimePosition.x)
+        {
+            Debug.Log("Player is on the right side of Slime.");
+            // Thực hiện các hành động khi Player ở bên phải Slime
+            currentMoveSpeed = MOVE_SPEED;
+            animator.SetFloat("MoveX", 1);
+
+        }
+        else
+        {
+            Debug.Log("Player is directly on top of Slime or at the same position.");
+            // Xử lý khi Player ở trên hoặc cùng vị trí với Slime (nếu cần)
+        }
+
         animator.SetTrigger("Attack");
         rb.velocity = Vector2.zero;
         IsTargeting = true;
+        audioSource.PlayOneShot(attackClip);
     }
 
     public void UntriggerAttack()

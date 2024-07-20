@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 3000;
+    public static readonly float SPEED = 1300;
 
     // Private props
     private float strength = 5;
@@ -30,6 +30,7 @@ public class Player : MonoBehaviour
     // Audio
     public AudioSource playerAudio;
     public AudioClip attackClip;
+    public AudioClip deadClip;
 
     // Player Stat
     public static readonly float NEXT_LEVEL_EXP = 100;
@@ -40,6 +41,7 @@ public class Player : MonoBehaviour
     public static readonly float ATTACK_DELAY_TIME = 0.5f; // Thời gian delay mong muốn
     private float lastAttackTime = 0f; // Thời gian đánh đòn trước
     private float lastHurtTime = 0f; // Thời gian đánh đòn trước
+    private float lastMoveTime = 0f; // Thời gian đánh đòn trước
 
 
     // Start is called before the first frame update
@@ -74,9 +76,9 @@ public class Player : MonoBehaviour
         if (!IsDead())
         {
             rb.velocity = new Vector2(
-               Input.GetAxisRaw("Horizontal"),
-               Input.GetAxisRaw("Vertical")
-           ) * SPEED * Time.deltaTime;
+                Input.GetAxisRaw("Horizontal"),
+                Input.GetAxisRaw("Vertical")
+            ) * SPEED * Time.deltaTime;
         }
 
         animator.SetFloat("MoveX", rb.velocity.x);
@@ -98,7 +100,6 @@ public class Player : MonoBehaviour
     void OnCollisionEnter2D(Collision2D collision)
     {
         // Xử lý va chạm
-        Debug.Log($"OnCollisionEnter2D {collision}");
     }
 
     void OnCollisionStay2D(Collision2D collision)
@@ -187,7 +188,7 @@ public class Player : MonoBehaviour
 
     public void OnHit(Collision2D collision)
     {
-        if (collision.gameObject.name == "Slime")
+        if (collision.gameObject.name.IndexOf("Slime") >= 0)
         {
             GameObject popup = Instantiate(hitPopup, transform.position, Quaternion.identity);
             popup.transform.SetParent(transform);
@@ -198,7 +199,6 @@ public class Player : MonoBehaviour
             health -= 10;
             float healthPercent = health / 100;
 
-            Debug.Log($"healthBar.transform.localScale.x {healthBar.transform.localScale.x} {healthPercent}");
             healthBar.transform.localScale = new Vector2(
                 1 * healthPercent,
                 healthBar.transform.localScale.y
@@ -207,6 +207,7 @@ public class Player : MonoBehaviour
             if (IsDead())
             {
                 animator.SetTrigger("Die");
+                playerAudio.PlayOneShot(deadClip);
                 boxCollider2D.enabled = false;
                 rb.velocity = Vector2.zero;
             }
@@ -273,6 +274,19 @@ public class Player : MonoBehaviour
         if (currentTime - lastAttackTime >= seconds)
         {
             lastAttackTime = currentTime;
+            return true;
+        }
+
+
+        return false;
+    }
+
+    public bool DelayTimeForMovement(float seconds)
+    {
+        float currentTime = Time.time;
+        if (currentTime - lastMoveTime >= seconds)
+        {
+            lastMoveTime = currentTime;
             return true;
         }
 
