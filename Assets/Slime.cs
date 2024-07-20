@@ -1,6 +1,4 @@
 ﻿using TMPro;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Slime : MonoBehaviour
@@ -30,44 +28,45 @@ public class Slime : MonoBehaviour
     public AudioClip deathClip;
 
     // Slime Stat
-    public string status = "Attack";
+    public bool IsTargeting;
 
     // Start is called before the first frame update
     void Start()
     {
         rb.freezeRotation = true;
-        originalX = transform.position;
+        IsTargeting = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        OnAttack();
-        //if (status == "Attack")
-        //{
-        //    Debug.Log("attack trigger123");
-        //    OnAttack();
-        //}
-        //else if (status == "Chase")
-        //{
-        //    OnFollow();
-        //}
-        //else
-        //{
-        //    IsFacingRight();
-        //    OnMovement();
-        //}
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
 
-        //animator.SetFloat("MoveX", rb.velocity.x);
-        //animator.SetFloat("MoveY", rb.velocity.y);
+        //if (isAttacking) // Check for space key press
+        //{
+            
+        //}
+        if (stateInfo.IsName("Slime_Attack") || IsTargeting) {
+            float normalizedTime = stateInfo.normalizedTime % 1; // Tỉ lệ từ 0 đến 1
+            int currentFrame = Mathf.FloorToInt(normalizedTime * 7);
+            if (currentFrame >= 2 && currentFrame <= 4)
+            {
+                rb.velocity = new Vector3(currentMoveSpeed * 3, 0);
+            }
+        }
+        else
+        {
+            OnMovement();
+            animator.SetFloat("MoveX", rb.velocity.x);
+            animator.SetFloat("MoveY", rb.velocity.y);
+        }
     }
 
-    public void IsFacingRight()
+    public bool IsAttacking()
     {
-        if (Vector3.Distance(originalX, transform.position) > 5) {
-            currentMoveSpeed = -currentMoveSpeed;
-            originalX = transform.position;
-        }
+        AnimatorStateInfo stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        return stateInfo.IsName("Slime_Attack");
     }
 
     private void OnTriggerStay2D(Collider2D collision)
@@ -86,23 +85,28 @@ public class Slime : MonoBehaviour
 
     private void OnMovement()
     {
+        if (Vector3.Distance(originalX, transform.position) > 5)
+        {
+            currentMoveSpeed = -currentMoveSpeed;
+            originalX = transform.position;
+        }
+
         rb.velocity = new Vector3(currentMoveSpeed, 0);
     }
 
-    private void OnFollow()
-    {
-        Vector2 direction = player.transform.position - transform.position;
-        float distance = Vector3.Distance(player.transform.position, transform.position);
+    //private void OnFollow()
+    //{
+    //    Vector2 direction = player.transform.position - transform.position;
+    //    float distance = Vector3.Distance(player.transform.position, transform.position);
 
-        if (distance > 5)
-        {
-            direction.x = 0;
-            direction.y = 0;
-            TriggerIddle();
-        }
+    //    if (distance > 5)
+    //    {
+    //        direction.x = 0;
+    //        direction.y = 0;
+    //    }
 
-        rb.velocity = direction * SPEED * Time.deltaTime;
-    }
+    //    rb.velocity = direction * SPEED * Time.deltaTime;
+    //}
 
     private void OnAttack()
     {
@@ -123,22 +127,20 @@ public class Slime : MonoBehaviour
         //rb.velocity = direction * 50 * Time.deltaTime;
         //Debug.Log("attack slime " + direction + " " + rb.velocity);
         //rb.velocity = next * 500 * Time.deltaTime;
-        rb.AddForce(Vector2.up * 700f);
+        rb.AddForce(new Vector2(5, 5), ForceMode2D.Impulse);
+        rb.gravityScale = 1;
     }
 
     public void TriggerAttack()
     {
-        status = "Attack";
+        animator.SetTrigger("Attack");
+        rb.velocity = Vector2.zero;
+        IsTargeting = true;
     }
 
-    public void TriggerFollow()
+    public void UntriggerAttack()
     {
-        status = "Chase";
-    }
-
-    public void TriggerIddle()
-    {
-        status = "";
+        IsTargeting = false;
     }
 
     private void CreateHitPopup()

@@ -29,13 +29,13 @@ public class MainCamera : MonoBehaviour
 
         float x = transform.position.x;
         float y = transform.position.y;
-
-        if (next.x >= 13 && next.x <= 25)
+        Debug.Log($"123123 {next.x}");
+        if (next.x >= 13.5f && next.x <= 27f)
         {
             x = next.x;
         }
 
-        if (next.y >= 2.6f && next.y <= 13.5f)
+        if (next.y >= 3.5f && next.y <= 14.5f)
         {
             y = next.y;
         }

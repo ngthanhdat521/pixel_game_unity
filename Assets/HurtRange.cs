@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ChaseRange : MonoBehaviour
+public class HurtRange : MonoBehaviour
 {
     public Slime slime;
 
@@ -18,10 +18,14 @@ public class ChaseRange : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.name == "Player")
-        {
-            //slime.TriggerFollow();
-            slime.TriggerAttack();
-        }
+        //slime.OnHit(collision);
+
+        //if (slime.DelayTime(0.5f))
+        //{
+        //    if (collision.name == "Player")
+        //    {
+        //        Debug.Log("okk");
+        //    }
+        //}
     }
 }
