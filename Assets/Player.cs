@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
 
 public class Player : MonoBehaviour
@@ -21,7 +19,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 1300;
+    public static readonly float SPEED = 1000;
 
     // Private props
     private float strength = 5;
@@ -56,6 +54,20 @@ public class Player : MonoBehaviour
             {"UpHitbox", upHitbox},
             {"DownHitbox", downHitbox},
         };
+
+        Collider2D[] allColliders = FindObjectsOfType<Collider2D>();
+        foreach (Collider2D collider in allColliders)
+        {
+            // Nếu Collider không phải là của Player và không thuộc layer "Obstacle"
+            Debug.Log("123 " + collider.name);
+
+            if (collider != boxCollider2D && collider.gameObject.name.IndexOf("Slime") >= 0)
+            {
+                // Bỏ qua va chạm giữa Player và Collider này
+                Physics2D.IgnoreCollision(boxCollider2D, collider, true);
+            }
+
+        }
     }
 
     // Update is called once per frame
