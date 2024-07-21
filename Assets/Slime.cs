@@ -199,7 +199,7 @@ public class Slime : MonoBehaviour
             animator.SetTrigger("Injured");
         }
 
-        Invoke("IsInjuring", 0.2f);
+        Invoke("IsInjuring", 0.5f);
     }
 
     void IsInjuring()
