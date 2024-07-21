@@ -33,7 +33,7 @@ public class SlimeDead : StateMachineBehaviour
     //    // Implement code that sets up animation IK (inverse kinematics)
     //}
 
-    public async override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
+    public override void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         if (stateInfo.IsName("Slime_Die"))
         {

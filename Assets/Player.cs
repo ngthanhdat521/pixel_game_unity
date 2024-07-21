@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     public GameObject hitPopup;
     public TMP_Text textPopup;
 
-    public static readonly float SPEED = 4000;
+    public static readonly float SPEED = 1000;
 
     // Private props
     private float strength = 5;
@@ -88,13 +88,14 @@ public class Player : MonoBehaviour
 
         if (!IsDead())
         {
-            int x = (int) Math.Floor(transform.position.x);
-            int y = (int) Math.Floor(transform.position.y);
-            Debug.Log(transform.position + " " + transform.position.y + " " + y + " " +x + " " + (transform.position.y >= -6 && transform.position.y <= 27));
+            double x = Math.Truncate(transform.position.x);
+            double y = Math.Truncate(transform.position.y);
+            double nextX = x + Input.GetAxisRaw("Horizontal");
+            double nextY = y + Input.GetAxisRaw("Vertical");
 
             if (
-                (x >= -10 && x <= 50) 
-                && (y >= -6 && y <= 27)
+                (nextX >= -10 && nextX <= 50) 
+                && (nextY > -8 && nextY <= 27)
             )
             {
                 rb.velocity = new Vector2(
